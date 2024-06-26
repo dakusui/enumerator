@@ -63,9 +63,45 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/dakusui/mddoclet</url>
+        </repository>
+    </repositories>
+
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <doclet>com.github.dakusui.mddoclet.MdDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>com.github.dakusui</groupId>
+                        <artifactId>mddoclet</artifactId>
+                        <version>1.0.1</version>
+                    </docletArtifact>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                    <additionalOptions>
+                        <additionalOption>-overview ${project.basedir}/src/main/javadoc/overview.md</additionalOption>
+                        <additionalOption>-d ${project.build.outputDirectory}/JavaMarkdown</additionalOption>
+                        <additionalOption>--source-path ${project.build.sourceDirectory}</additionalOption>
+                        <additionalOption>--class-path ${project.build.outputDirectory}</additionalOption>
+                    </additionalOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
